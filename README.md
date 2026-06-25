@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Qemwork – Questionnaire de qualification
 
-## Getting Started
+Formulaire web multi-étapes envoyé par **Found ID** à Qemwork pour cadrer la
+mission backend avant proposition commerciale. Les réponses sont stockées dans
+Supabase.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router, TypeScript)
+- React 19
+- Tailwind CSS v4 + shadcn/ui
+- react-hook-form + zod 4
+- Supabase JS (insertion via Server Action)
+- Sonner (toasts), framer-motion, @dnd-kit (ranking)
+
+## Démarrage rapide
 
 ```bash
+git clone <repo-url>
+cd qemwork
+npm install
+cp .env.local.example .env.local
+# Remplir NEXT_PUBLIC_SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+L'application est accessible sur `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Configuration Supabase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Créer un projet sur [supabase.com](https://supabase.com).
+2. Dans **SQL Editor**, exécuter le contenu de
+   [`supabase/migration.sql`](./supabase/migration.sql). Cela crée la table
+   `qemwork_responses` ainsi que la politique RLS d'insertion publique.
+3. Dans **Project Settings → API**, copier :
+   - `Project URL` → `NEXT_PUBLIC_SUPABASE_URL`
+   - `service_role` secret → `SUPABASE_SERVICE_ROLE_KEY`
+4. Coller ces valeurs dans `.env.local`.
 
-## Learn More
+> La clé `service_role` ne doit **jamais** être exposée côté client. Elle est
+> utilisée uniquement dans le Server Action `app/actions/submit-response.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+## Consultation des réponses
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Pas de back-office dédié : ouvrir Supabase Studio → table `qemwork_responses`.
+Tri par `submitted_at desc`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Structure
 
-## Deploy on Vercel
+```
+app/
+  page.tsx                       # Landing (/)
+  questionnaire/
+    page.tsx                     # Coquille serveur
+    questionnaire-form.tsx       # Formulaire client multi-étapes
+    priorities-sortable.tsx      # Widget de ranking drag & drop
+  merci/page.tsx                 # Confirmation (/merci)
+  actions/submit-response.ts     # Server Action (validation + insert)
+lib/
+  schema.ts                      # Schémas zod partagés (client + serveur)
+  supabase/server.ts             # Client Supabase service-role
+components/ui/                   # shadcn/ui primitives
+supabase/migration.sql           # Migration SQL
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Validation & sauvegarde
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Validation zod côté **client** (par étape) ET côté **serveur** (schéma
+  complet dans le Server Action).
+- Les réponses sont sauvegardées automatiquement dans `localStorage` à chaque
+  modification, sous la clé `qemwork-qualification-v1`. Effacées après envoi.
+- Rate limit en mémoire côté serveur : 5 soumissions max / IP / heure.
+
+## Déploiement Vercel
+
+1. Importer le repo dans Vercel.
+2. Ajouter les variables d'environnement dans **Project Settings →
+   Environment Variables** :
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+3. Déployer. Aucune autre configuration n'est requise (pas d'edge runtime
+   spécifique, pas de webhook).
+
+> Le rate limit étant en mémoire, il est reset à chaque cold start. Suffisant
+> pour cette V1 ; à remplacer par Upstash ou Supabase si trafic.
+
+## Commandes utiles
+
+```bash
+npm run dev      # Serveur de dev
+npm run build    # Build de production
+npm run start    # Lancer le build
+npm run lint     # ESLint
+```
