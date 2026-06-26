@@ -85,7 +85,7 @@ type FormValues = {
   recap_feedback: string;
 };
 
-const STORAGE_KEY = "qemwork-qualification-v2";
+const STORAGE_KEY = "qemwork-qualification-v3";
 
 const STEP_SCHEMAS: ZodTypeAny[] = [
   step1Schema,
