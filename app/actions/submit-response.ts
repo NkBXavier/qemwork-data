@@ -62,6 +62,9 @@ export async function submitResponse(input: unknown): Promise<SubmitResult> {
   try {
     const supabase = getSupabaseAdmin();
     const { error } = await supabase.from("qemwork_responses").insert({
+      report_feedback: d.report_feedback || null,
+      recap_feedback: d.recap_feedback || null,
+
       contact_name: d.contact_name,
       contact_role: d.contact_role,
       contact_email: d.contact_email,
@@ -74,6 +77,8 @@ export async function submitResponse(input: unknown): Promise<SubmitResult> {
       current_issues: d.current_issues,
       has_documentation: d.has_documentation,
       documentation_link: d.documentation_link || null,
+      documentation_file_path: d.documentation_file_path || null,
+      documentation_file_name: d.documentation_file_name || null,
 
       data_types: d.data_types,
       data_types_other: d.data_types_other || null,
@@ -84,7 +89,6 @@ export async function submitResponse(input: unknown): Promise<SubmitResult> {
       technical_needs: d.technical_needs,
 
       engagement_type: d.engagement_type,
-      priorities: d.priorities,
       additional_notes: d.additional_notes || null,
 
       user_agent: userAgent,

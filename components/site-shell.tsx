@@ -15,8 +15,8 @@ export function SiteHeader() {
             className="h-9 w-auto sm:h-10"
           />
         </Link>
-        <span className="hidden text-sm font-medium text-zinc-600 sm:inline">
-          Pour <span className="text-zinc-900">Qemwork</span>
+        <span className="hidden text-[15px] font-semibold text-zinc-700 sm:inline">
+          Pour <span className="font-bold text-zinc-950">Qemwork</span>
         </span>
       </div>
     </header>
@@ -26,7 +26,7 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-zinc-200 bg-white">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-5 py-6 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-5 py-6 text-[13px] text-zinc-700 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:text-xs">
         <span>
           © {new Date().getFullYear()} Found ID — Data et IA pour bâtir
           l&apos;Afrique de demain.

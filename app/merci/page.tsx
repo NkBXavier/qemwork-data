@@ -19,22 +19,23 @@ export default function MerciPage() {
             <CheckCircle2 className="h-8 w-8" />
           </div>
           <div className="flex flex-col gap-3">
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
+            <h1 className="text-[1.85rem] font-bold leading-tight tracking-tight text-zinc-950 sm:text-4xl">
               Merci pour vos réponses
             </h1>
-            <p className="text-lg leading-relaxed text-zinc-600 sm:text-xl">
+            <p className="text-[16px] leading-relaxed text-zinc-800 sm:text-xl">
               Vos réponses sont bien arrivées chez Found ID. Nous revenons vers
-              vous sous <strong>48 h</strong> avec une proposition cadrée pour
-              votre projet backend.
+              vous sous{" "}
+              <strong className="font-bold text-zinc-950">48 h</strong> avec
+              une proposition cadrée pour votre projet backend.
             </p>
           </div>
           <Button
             variant="outline"
-            className="mt-2 h-11 px-5 text-base"
+            className="mt-2 h-12 px-5 text-base font-semibold"
             nativeButton={false}
             render={
               <a
-                href="https://www.found-id.com"
+                href="https://found-ids.com/"
                 target="_blank"
                 rel="noopener noreferrer"
               />

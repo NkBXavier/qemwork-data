@@ -60,7 +60,7 @@
   --secondary: #F7F5F2;
   --secondary-foreground: #1A1A1A;
   --muted: #F4F2EE;
-  --muted-foreground: #4B4B4B;
+  --muted-foreground: #3A3A3A;
   --accent: #FBEFEF;
   --accent-foreground: #B31E22;
   --destructive: oklch(0.577 0.245 27.325);
@@ -132,17 +132,30 @@
     -moz-osx-font-smoothing: grayscale;
   }
   body {
-    @apply bg-background text-foreground text-[15px] leading-relaxed;
+    @apply bg-background text-foreground text-base leading-relaxed;
+    text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4 {
     @apply text-foreground tracking-tight;
     font-feature-settings: "ss01", "cv11";
   }
   p {
-    @apply text-zinc-700;
+    @apply text-zinc-800;
   }
   label {
     @apply text-zinc-900;
+  }
+  ::selection {
+    background-color: color-mix(in oklab, var(--primary) 25%, transparent);
+    color: var(--foreground);
+  }
+  /* Empêche le zoom auto iOS sur les inputs sur écrans étroits */
+  @media (max-width: 640px) {
+    input:not([type="checkbox"]):not([type="radio"]),
+    select,
+    textarea {
+      font-size: max(16px, 1rem);
+    }
   }
   .brand-band {
     background: linear-gradient(
