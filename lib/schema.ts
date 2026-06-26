@@ -179,8 +179,8 @@ export const fullResponseSchema = z
 
 export type FullResponse = z.infer<typeof fullResponseSchema>;
 export const STEP_KEYS: (keyof FullResponse)[][] = [
-  ["report_feedback"],
   ["contact_name", "contact_role", "contact_email", "contact_phone"],
+  ["report_feedback"],
   ["active_users", "growth_goals"],
   [
     "backend_setup",

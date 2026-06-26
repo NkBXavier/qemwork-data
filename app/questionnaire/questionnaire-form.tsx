@@ -88,8 +88,8 @@ type FormValues = {
 const STORAGE_KEY = "qemwork-qualification-v2";
 
 const STEP_SCHEMAS: ZodTypeAny[] = [
-  stepReportSchema,
   step1Schema,
+  stepReportSchema,
   step2Schema,
   step3Schema,
   step4Schema,
@@ -99,8 +99,8 @@ const STEP_SCHEMAS: ZodTypeAny[] = [
 ];
 
 const STEP_TITLES = [
-  "Rapport d'analyse",
   "Identification",
+  "Rapport d'analyse",
   "Activité & croissance",
   "Architecture actuelle",
   "Données & sécurité",
@@ -109,9 +109,9 @@ const STEP_TITLES = [
   "Récapitulatif",
 ];
 
-const PHASE_OF_STEP = [1, 2, 2, 2, 2, 2, 2, 3] as const;
+const PHASE_OF_STEP = [1, 1, 2, 2, 2, 2, 2, 3] as const;
 const PHASE_TITLES = {
-  1: "Analyse préliminaire",
+  1: "Identification & analyse",
   2: "Vos besoins",
   3: "Validation",
 } as const;
@@ -299,8 +299,8 @@ export default function QuestionnaireForm() {
               </p>
             </div>
 
-            {step === 0 && <StepReport form={form} />}
-            {step === 1 && <Step1 form={form} />}
+            {step === 0 && <Step1 form={form} />}
+            {step === 1 && <StepReport form={form} />}
             {step === 2 && <Step2 form={form} />}
             {step === 3 && <Step3 form={form} />}
             {step === 4 && <Step4 form={form} />}
